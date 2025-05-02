@@ -10,6 +10,8 @@ import com.malinda.movie_rating.repositories.MovieRepository;
 import com.malinda.movie_rating.services.MovieService;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -48,12 +50,8 @@ public class MovieSaveIMPL implements MovieService {
     }
 
     @Override
-    public List<Movie> getAllMovies() {
-        List<Movie> movies = movieRepository.findAll();
-        if (movies.isEmpty()) {
-            throw new RuntimeException("No movies found");
-        }
-        return movies;
+    public Page<Movie> getAllMovies(int page, int size) {
+        return movieRepository.findAll(PageRequest.of(page, size));
     }
 
     @Override
@@ -75,8 +73,8 @@ public class MovieSaveIMPL implements MovieService {
     }
 
     @Override
-    public List<Movie> getAllByGenre(Genre genre) {
-        List<Movie> movies = movieRepository.findAllByGenre(genre);
+    public Page<Movie> getAllByGenre(Genre genre, int page, int size) {
+        Page<Movie> movies = movieRepository.findAllByGenre(genre, PageRequest.of(page, size));
         if (movies.isEmpty()) {
             throw new RuntimeException("No movies found for genre: " + genre);
         }
