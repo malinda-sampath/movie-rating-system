@@ -1,5 +1,6 @@
 package com.malinda.movie_rating.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -27,5 +28,6 @@ public class Movie {
     private LocalDate releaseDate;
 
     @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<Rating> ratings = new ArrayList<>();
 }
