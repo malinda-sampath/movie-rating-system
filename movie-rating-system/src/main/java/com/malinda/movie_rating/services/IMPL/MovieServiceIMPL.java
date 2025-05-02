@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
-public class MovieSaveIMPL implements MovieService {
+public class MovieServiceIMPL implements MovieService {
 
     private final MovieRepository movieRepository;
     private final ModelMapper modelMapper;
