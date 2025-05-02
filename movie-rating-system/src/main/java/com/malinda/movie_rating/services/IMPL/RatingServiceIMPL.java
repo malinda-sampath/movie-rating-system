@@ -9,6 +9,8 @@ import com.malinda.movie_rating.services.RatingService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class RatingServiceIMPL implements RatingService {
@@ -34,6 +36,14 @@ public class RatingServiceIMPL implements RatingService {
         ratingRepository.save(rating);
 
         return "Rating added successfully!";
+    }
+
+    @Override
+    public List<String> getReviewsByTitleAndRating(String title, int score) {
+        if (score < 1 || score > 5) {
+            throw new IllegalArgumentException("Rating must be between 1 and 5");
+        }
+        return ratingRepository.findReviewsByMovieTitleAndScore(title, score);
     }
 
 }

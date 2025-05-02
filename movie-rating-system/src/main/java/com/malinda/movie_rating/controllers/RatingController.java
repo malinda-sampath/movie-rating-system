@@ -4,12 +4,11 @@ import com.malinda.movie_rating.dtos.resquest.RatingSaveDTO;
 import com.malinda.movie_rating.services.RatingService;
 import com.malinda.movie_rating.utils.ResponseBuilder;
 import com.malinda.movie_rating.utils.StandardResponse;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/rating")
@@ -23,5 +22,15 @@ public class RatingController {
         String message = ratingService.addRating(dto);
         return ResponseBuilder.success(message, null);
     }
+
+    @GetMapping("/reviews")
+    public ResponseEntity<StandardResponse<List<String>>> getReviewsByTitleAndRating(
+            @RequestParam String title,
+            @RequestParam int rating
+    ) {
+        List<String> reviews = ratingService.getReviewsByTitleAndRating(title, rating);
+        return ResponseBuilder.success("Reviews Retrieved Successfully", reviews);
+    }
+
 
 }
