@@ -4,48 +4,48 @@
 
 This is a Movie Rating System built using Java 21, Spring Boot, and MySQL. The system allows users to:
 
-- Add, remove, update, and view movie details.
-- Add ratings (1-5) and optional reviews for movies.
-- View all movies of a specific genre.
-- View reviews for a movie based on its title and a specified rating.
-- View the top-rated movie list based on average ratings.
+* Add, remove, update, and view movie details.
+* Add ratings (1-5) and optional reviews for movies.
+* View all movies of a specific genre (with pagination).
+* View reviews for a movie based on its title and a specified rating.
+* View the top-rated movie list based on average ratings.
 
 ## Features
 
-- **Movies**: Add, update, delete, and view movie details.
-- **Ratings**: Add ratings and reviews for movies. Users can filter reviews by title and rating.
-- **Genres**: Movies can be categorized into genres such as Horror, Action, Romance, Comedy, and Science Fiction.
-- **Top-Rated Movies**: Displays movies with at least five ratings, ranked by average rating.
+* **Movies**: Add, update, delete, and view movie details with pagination support.
+* **Ratings**: Add ratings and reviews for movies. Users can filter reviews by title and rating.
+* **Genres**: Movies can be categorized into genres such as Horror, Action, Romance, Comedy, and Science Fiction.
+* **Top-Rated Movies**: Displays movies with at least five ratings, ranked by average rating.
 
 ## Technologies Used
 
-- **Java**: 21
-- **Spring Boot**: 3.4.x
-- **MySQL**: 8.x
-- **JPA/Hibernate**: For database interaction
+* **Java**: 21
+* **Spring Boot**: 3.4.x
+* **MySQL**: 8.x
+* **JPA/Hibernate**: For database interaction
 
 ## Prerequisites
 
-- Java 21
-- MySQL Database
-- Maven
+* Java 21
+* MySQL Database
+* Maven
 
 ## Setup
 
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/movie-rating-system.git
+git clone https://github.com/malinda-sampath/movie-rating-system.git
 cd movie-rating-system
 ```
 
 ### 2. Database Configuration
 
-- Install MySQL locally or use a remote instance.
-- Create a database (e.g., `mv_rating_db`).
-- Update the `application.yaml` and `application-dev.yaml` files in the `src/main/resources` folder with your database connection details.
+* Install MySQL locally or use a remote instance.
+* Create a database (e.g., `mv_rating_db`).
+* Update the `application.yaml` and `application-dev.yaml` files in the `src/main/resources` folder with your database connection details.
 
-### **`application.yaml`** (for general configuration):
+### **`application.yaml`**:
 
 ```yaml
 spring:
@@ -65,7 +65,7 @@ server:
   port: 8082
 ```
 
-### **`application-dev.yaml`** (for development environment-specific configuration):
+### **`application-dev.yaml`**:
 
 ```yaml
 spring:
@@ -88,8 +88,6 @@ spring:
       mode: always
 ```
 
-- Set your MySQL database credentials as environment variables or in the `application.yaml` file (e.g., `${SPRING_DATASOURCE_URL}`).
-
 ### 3. Build the Project
 
 ```bash
@@ -104,56 +102,49 @@ mvn spring-boot:run
 
 The application will run on `http://localhost:8082`.
 
-### 5. Database Schema
+## Database Schema
 
-The system uses the following entities:
+* **Movie**: Stores movie details (title, genre, release date).
+* **Rating**: Stores movie ratings and reviews, linked to the `Movie` entity.
 
-- **Movie**: Stores movie details (title, genre, release date).
-- **Rating**: Stores movie ratings and reviews, linked to the `Movie` entity.
+## API Endpoints
 
-### 6. API Endpoints
+### Movie Endpoints
 
-- **Add Movie**:
+* **Add Movie**
+  `POST /api/movie/add`
+  Request Body: `MovieSaveDTO`
 
-  - `POST /api/movie/add`
-  - Request body: `MovieSaveDTO`
+* **Get All Movies (Paginated)**
+  `GET /api/movie/getAll?page={page}&size={size}`
 
-- **Get All Movies**:
+* **Get Movie by ID**
+  `GET /api/movie/get-by-id/{id}`
 
-  - `GET /api/movie/getAll`
+* **Update Movie**
+  `PUT /api/movie/update/{id}`
+  Request Body: `Movie` (updated entity)
 
-- **Get Movie by ID**:
+* **Delete Movie**
+  `DELETE /api/movie/delete-by-id/{id}`
 
-  - `GET /api/movie/get-by-id/{id}`
+* **Get Movies by Genre (Paginated)**
+  `GET /api/movie/genre/{genre}?page={page}&size={size}`
 
-- **Update Movie**:
+* **Get Top-Rated Movies**
+  `GET /api/movie/top-rated`
+  Returns movies with at least five ratings, sorted by average rating.
 
-  - `PUT /api/movie/update/{id}`
+### Rating Endpoints
 
-- **Delete Movie**:
+* **Add Rating**
+  `POST /api/rating/add`
+  Request Body: `RatingSaveDTO`
 
-  - `DELETE /api/movie/delete-by-id/{id}`
+* **Get Reviews by Title and Rating**
+  `GET /api/rating/reviews?title={title}&rating={rating}`
 
-- **Get Movies by Genre**:
-
-  - `GET /api/movie/genre/{genre}`
-
-- **Get Top-Rated Movies**:
-
-  - `GET /api/movie/top-rated`
-
-- **Add Rating**:
-
-  - `POST /api/rating/add`
-  - Request body: `RatingSaveDTO`
-
-- **Get Reviews by Title and Rating**:
-
-  - `GET /api/rating/reviews?title={title}&rating={rating}`
-
-### 7. Running Tests
-
-You can run tests using Maven:
+## Running Tests
 
 ```bash
 mvn test
