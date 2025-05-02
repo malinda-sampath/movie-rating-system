@@ -7,6 +7,7 @@ import com.malinda.movie_rating.services.MovieService;
 import com.malinda.movie_rating.utils.ResponseBuilder;
 import com.malinda.movie_rating.utils.StandardResponse;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,8 +27,11 @@ public class MovieController {
     }
 
     @GetMapping("/getAll")
-    public ResponseEntity<StandardResponse<List<Movie>>> getAllMovies() {
-        List<Movie> movies = movieService.getAllMovies();
+    public ResponseEntity<StandardResponse<Page<Movie>>> getAllMovies(
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "10") int size
+    ) {
+        Page<Movie> movies = movieService.getAllMovies(page, size);
         return ResponseBuilder.success("Movies Retrieved Successfully", movies);
     }
 
@@ -50,8 +54,12 @@ public class MovieController {
     }
 
     @GetMapping("/genre/{genre}")
-    public ResponseEntity<StandardResponse<List<Movie>>> getMoviesByGenre(@PathVariable Genre genre) {
-        List<Movie> movies = movieService.getAllByGenre(genre);
+    public ResponseEntity<StandardResponse<Page<Movie>>> getMoviesByGenre(
+            @PathVariable Genre genre,
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "10") int size
+            ) {
+        Page<Movie> movies = movieService.getAllByGenre(genre, page, size);
         return ResponseBuilder.success("Movies Retrieved Successfully", movies);
     }
 
